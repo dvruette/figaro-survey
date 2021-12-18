@@ -1,0 +1,21 @@
+{
+  "name": "symbolic-music-survey",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "firebase": "^9.6.1",
+    "vue": "^3.2.25",
+    "vue-i18n": "^9.2.0-beta.23"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.0.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.3",
+    "vite": "^2.7.2"
+  }
+}

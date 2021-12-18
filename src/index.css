@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    hyphens: auto;
+    @apply absolute top-0 bottom-0 left-0 right-0 bg-slate-50;
+  }
+
+  #app {
+    @apply w-full min-h-full flex items-center justify-center p-4
+  }
+}
