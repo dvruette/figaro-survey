@@ -6,6 +6,7 @@ import QuestionRandomizer from './components/QuestionRandomizer.vue'
 const samples = reactive({
   original: [],
   baseline: [],
+  autoencoder: [],
   museMorphose: [],
   desc2seqBoth: [],
   desc2seqBasic: [],
@@ -27,10 +28,9 @@ const sampleCategories = computed(() => {
   return [
     { name: 'original', samples: samples.original },
     { name: 'baseline', samples: samples.baseline },
+    { name: 'autoencoder', samples: samples.autoencoder },
     { name: 'muse-morphose', samples: samples.museMorphose },
     { name: 'desc2seq-both', samples: samples.desc2seqBoth },
-    { name: 'desc2seq-basic', samples: samples.desc2seqBasic },
-    { name: 'desc2seq-latent', samples: samples.desc2seqLatent },
   ]
 })
 
@@ -53,20 +53,16 @@ getSamplesList('baseline').then(list => {
   samples.baseline = list
 })
 
+getSamplesList('autoencoder').then(list => {
+  samples.autoencoder = list
+})
+
 getSamplesList('muse-morphose').then(list => {
   samples.museMorphose = list
 })
 
 getSamplesList('desc2seq-both').then(list => {
   samples.desc2seqBoth = list
-})
-
-getSamplesList('desc2seq-basic').then(list => {
-  samples.desc2seqBasic = list
-})
-
-getSamplesList('desc2seq-latent').then(list => {
-  samples.desc2seqLatent = list
 })
 
 const NODE_ENV = import.meta.env.MODE

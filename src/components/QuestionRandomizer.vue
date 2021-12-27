@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref, watch, defineEmits } from 'vue'
+import { ref, watch } from 'vue'
 import PreferenceQuestion from './PreferenceQuestion.vue'
 import { uploadAnswer } from '../api'
 
@@ -48,7 +48,7 @@ const handleAnswer = (answer) => {
   const [winnerSample, loserSample] = choice == 'A' ? [sampleA, sampleB] : [sampleB, sampleA]
   
   // upload answer to firebase
-  uploadAnswer({ choice, winner, loser, winnerSample, loserSample })
+  uploadAnswer({ a: keyA, b: keyB, choice, winner, loser, winnerSample, loserSample })
 
   resample()
   currQuestion.value += 1

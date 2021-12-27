@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, computed, defineEmits } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 import { getSample } from '../api'
 
 const props = defineProps({
