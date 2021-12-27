@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import PreferenceQuestion from './PreferenceQuestion.vue'
 import { uploadAnswer } from '../api'
 
@@ -59,13 +59,19 @@ const handleAnswer = (answer) => {
 
 const NODE_ENV = import.meta.env.MODE
 
+const questionRange = computed(() => [currQuestion.value])
+
 </script>
 
 <template>
   <div v-if="currQuestion < numQuestions">
     <p class="text-center text-sm font-medium text-gray-700 mb-2">Question {{currQuestion + 1}}/{{numQuestions}}</p>
     <hr class="border-gray-200 mt-4 mb-6" />
-    <PreferenceQuestion :key="currQuestion" :samples-a="samplesA" :samples-b="samplesB" @answer="handleAnswer" />
+    <transition-group name="slide" tag="div" class="relative overflow-hidden -mx-4 px-4">
+      <div v-for="i in questionRange" :key="i">
+        <PreferenceQuestion :samples-a="samplesA" :samples-b="samplesB" @answer="handleAnswer" />
+      </div>
+    </transition-group>
 
     <div v-if="NODE_ENV == 'development'" class="fixed bottom-0 right-0">
       sample A: {{sampleCategories[indexA].name}}, sample B: {{sampleCategories[indexB].name}}
@@ -75,3 +81,28 @@ const NODE_ENV = import.meta.env.MODE
     <p class="text-center">{{ $t('done.thank_you') }}</p>
   </div>
 </template>
+
+<style>
+.slide-enter-active, .slide-leave-active {
+  transition: .5s ease transform, .5s ease opacity;
+}
+.slide-leave-active {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+}
+
+.slide-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.slide-enter-to, .slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+</style>

@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app"
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage"
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "firebase/firestore"
 
+const NODE_ENV = import.meta.env.MODE
+
 const firebaseConfig = {
   apiKey: "AIzaSyC-xjJ4qKSI0mIZOlnR3e5OJ_qLfVQoVSw",
   authDomain: "symbolic-music.firebaseapp.com",
@@ -39,6 +41,7 @@ export { getSample as getSample }
 async function uploadAnswer(answer) {
   return await addDoc(collection(db, 'answers'), {
     ...answer,
+    environment: NODE_ENV,
     uid: localStorage['uid'],
     created: serverTimestamp()
   }).catch(error => {

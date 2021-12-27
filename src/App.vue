@@ -104,11 +104,11 @@ const share = () => {
     <button @click="download" class="bg-black text-white px-4 py-2 shadow-lg rounded font-bold">Download</button>
   </div>
 
-  <div class="max-w-full w-full sm:max-w-xl p-4 bg-white shadow rounded-lg">
+  <div class="max-w-full w-full sm:max-w-2xl p-4 bg-white shadow rounded-lg">
     <div v-if="view == 'lang'">
       <h1 class="text-xl sm:text-2xl font-bold text-center mb-2">{{ $t('survey_name') }}</h1>
       
-      <div class="flex flex-col sm:flex-row gap-8 p-6">
+      <div class="flex flex-col sm:flex-row gap-8 p-6 justify-evenly">
         <button @click="setLanguage('en')" class="w-full sm:w-64 p-4 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition font-bold rounded">English</button>
         <button @click="setLanguage('de')" class="w-full sm:w-64 p-4 border border-gray-200 hover:border-black hover:bg-black hover:text-white transition font-bold rounded">Deutsch</button>
       </div>
@@ -116,8 +116,14 @@ const share = () => {
 
     <div v-if="view == 'init'">
       <h1 class="text-xl sm:text-2xl font-bold mb-4">{{ $t('survey_name') }}</h1>
+      <p class="mb-2">
+        {{ $t('init.lead_1') }}
+      </p>
+      <p class="mb-2">
+        {{ $t('init.lead_2') }}
+      </p>
       <p class="mb-4">
-        {{ $t('init.lead') }}
+        {{ $t('init.lead_3') }}
       </p>
 
       <h4 class="font-bold text-md mb-1">{{ $t('init.preference_title') }}</h4>
