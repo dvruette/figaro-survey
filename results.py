@@ -3,8 +3,16 @@ import pandas as pd
 
 csv_file = os.getenv('CSV_FILE', './answers.csv')
 
-def remove_invalid_answers(df: pd.DataFrame):
-  return df.loc[df.environment != 'development']
+def remove_invalid_answers(df: pd.DataFrame, min_playback_time=2, invalid_user_threshold=1):
+  invalid_answers = df.loc[(df.playbackTimeA < min_playback_time) | (df.playbackTimeB < min_playback_time)]
+  invalid_users = invalid_answers.groupby('uid').count()['a'].reset_index().rename(columns={'a': 'count'})
+  invalid_users = invalid_users[invalid_users['count'] >= invalid_user_threshold]['uid']
+  # drop invalid users
+  for user in invalid_users:
+    df = df.drop(df.loc[df['uid'] == user].index)
+  # drop dev answers
+  df = df.drop(df.loc[df.environment == 'development'].index)
+  return df
 
 def get_winrates(rounds: pd.DataFrame):
   wins = rounds.groupby('model').sum()['score']
@@ -21,6 +29,12 @@ def main():
   wins['score'] = 1
   losses['score'] = 0
   rounds = pd.concat([wins, losses])
+
+  print("########## PARTICIPANTS ##########")
+  print(f"Num. of answers:   {len(df):3d}", )
+  print(f"Num. participants: {len(df['uid'].unique()):3d}")
+  print(f"Avg. answer count: {df.groupby('uid').count()['a'].mean():3.1f}")
+  print()
   
   print("########## WINRATES ##########")
   print(get_winrates(rounds))
