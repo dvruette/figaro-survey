@@ -11,23 +11,48 @@ const emit = defineEmits(['answer'])
 
 const playedA = ref(false)
 const playedB = ref(false)
+const playbackTimeA = ref(0)
+const playbackTimeB = ref(0)
+const startedA = ref(null)
+const startedB = ref(null)
 const currentA = ref('')
 const currentB = ref('')
 
+const samplerA = ref(null)
+const samplerB = ref(null)
+
 const handlePlayA = (sample) => {
+  if (!playedA.value) {
+    const el = samplerA.value.querySelector('audio')
+    el.addEventListener('timeupdate', event => {
+      playbackTimeA.value = Math.max(event.target.currentTime, playbackTimeA.value)
+    })
+  }
   playedA.value = true
+  startedA.value = Date.now()
   currentA.value = sample
 }
 
 const handlePlayB = (sample) => {
+  if (!playedB.value) {
+    const el = samplerB.value.querySelector('audio')
+    el.addEventListener('timeupdate', event => {
+      playbackTimeB.value = Math.max(event.target.currentTime, playbackTimeB.value)
+    })
+  }
   playedB.value = true
+  startedB.value = Date.now()
   currentB.value = sample
 }
 
 const prefer = (choice) => emit('answer', {
   choice: choice,
   sampleA: currentA.value,
-  sampleB: currentB.value
+  sampleB: currentB.value,
+  playbackTimeA: playbackTimeA.value,
+  playbackTimeB: playbackTimeB.value,
+  startedA: startedA.value,
+  startedB: startedB.value,
 })
 
 </script>
@@ -38,8 +63,12 @@ const prefer = (choice) => emit('answer', {
       <p class="mb-3">{{ $t('survey.instructions') }}</p>
 
       <div class="flex flex-col sm:flex-row gap-4 w-full">
-        <Sampler class="flex-grow" @play="handlePlayA" :samples="samplesA" :title="$t('survey.sample', { key: 'A' })" />
-        <Sampler class="flex-grow" @play="handlePlayB" :samples="samplesB" :title="$t('survey.sample', { key: 'B' })" />
+        <div ref="samplerA" class="flex-grow">
+          <Sampler class="w-full" @play="handlePlayA" :samples="samplesA" :title="$t('survey.sample', { key: 'A' })" />
+        </div>
+        <div ref="samplerB" class="flex-grow">
+          <Sampler class="w-full" @play="handlePlayB" :samples="samplesB" :title="$t('survey.sample', { key: 'B' })" />
+        </div>
       </div>
     </div>
 

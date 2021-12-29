@@ -41,14 +41,19 @@ watch(indexB, () => samplesB.value = getSamplesB())
 watch(() => props.sampleCategories, resample)
 
 const handleAnswer = (answer) => {
-  const { choice, sampleA, sampleB } = answer
+  const { choice, sampleA, sampleB, playbackTimeA, playbackTimeB, startedA, startedB } = answer
   const keyA = props.sampleCategories[indexA.value].name
   const keyB = props.sampleCategories[indexB.value].name
   const [winner, loser] = choice == 'A' ? [keyA, keyB] : [keyB, keyA]
   const [winnerSample, loserSample] = choice == 'A' ? [sampleA, sampleB] : [sampleB, sampleA]
   
   // upload answer to firebase
-  uploadAnswer({ a: keyA, b: keyB, choice, winner, loser, winnerSample, loserSample })
+  uploadAnswer({
+    a: keyA, b: keyB, sampleA, sampleB,
+    choice, winner, loser, winnerSample, loserSample, 
+    playbackTimeA, playbackTimeB, startedA, startedB,
+    submitted: Date.now()
+  })
 
   resample()
   currQuestion.value += 1

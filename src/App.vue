@@ -68,11 +68,22 @@ getSamplesList('desc2seq-both').then(list => {
 const NODE_ENV = import.meta.env.MODE
 
 const download = async () => {
+  const keys = [
+    'a', 'b', 'choice', 'winner', 'loser', 'winnerSample', 'loserSample',
+    'playbackTimeA', 'playbackTimeB', 'startedA', 'startedB', 'submitted',
+    'uid', 'environment', 'created'
+  ]
   const answers = await downloadAnswers()
+  
   if (answers.length) {
-    const header = Object.keys(answers[0]).join(',')
-    const csv = header + '\n' + answers.map(obj => Object.values(obj).join(',')).join('\n')
-    const dataUrl = "data:text/plain;charset=utf-8," + encodeURIComponent(csv);
+    answers.forEach(obj => {
+      obj.created = obj.created.toMillis()
+    })
+    
+    const header = keys.join(',') + '\n'
+    const rows = answers.map(obj => keys.map(key => obj[key]).join(',')).join('\n')
+    const csv = header + rows
+    const dataUrl = encodeURI("data:text/csv;charset=utf-8," + csv)
     const anchor = document.createElement('a')
     anchor.setAttribute('href', dataUrl)
     anchor.setAttribute('download', 'answers.csv')

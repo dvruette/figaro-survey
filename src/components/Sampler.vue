@@ -69,10 +69,10 @@ const timeupdate = (event) => {
 </script>
 
 <template>
-  <p v-if="sample === null" class="rounded w-full sm:w-64 h-16 bg-gray-100 text-gray-400 border border-gray-200 font-medium flex justify-center items-center">
+  <p v-if="sample === null" class="rounded h-16 bg-gray-100 text-gray-400 border border-gray-200 font-medium flex justify-center items-center">
     Loading...
   </p>
-  <div v-else class="relative rounded overflow-hidden w-full sm:w-64 h-16 hover:shadow-lg transition" :class="{ 'ring-[3px] ring-green-500 ring-opacity-40': playing }">
+  <div v-else class="relative rounded overflow-hidden h-16 hover:shadow-lg transition" :class="{ 'ring-[3px] ring-green-500 ring-opacity-40': playing }">
     <button @click="playing ? pause() : play()" class="relative rounded w-full h-full bg-white flex justify-center items-center border border-black border-opacity-10">
       <img v-if="playing" src="../assets/pause.svg">
       <img v-else src="../assets/play.svg">
