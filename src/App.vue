@@ -73,7 +73,7 @@ const download = async () => {
   const keys = [
     'a', 'b', 'choice', 'winner', 'loser', 'winnerSample', 'loserSample',
     'playbackTimeA', 'playbackTimeB', 'startedA', 'startedB', 'submitted',
-    'uid', 'environment', 'created'
+    'uid', 'uniformChoice', 'environment', 'created'
   ]
   const answers = await downloadAnswers()
   

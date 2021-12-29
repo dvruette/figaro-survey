@@ -5,7 +5,8 @@ import { uploadAnswer } from '../api'
 
 const props = defineProps({
   sampleCategories: Array,
-  numQuestions: { type: Number, default: 15 }
+  numQuestions: { type: Number, default: 15 },
+  zeroProb: { type: Number, default: 0.2 }
 })
 
 const emit = defineEmits(['finished'])
@@ -21,8 +22,9 @@ const randomIndexButNot = (idx) => {
 }
 const hasSample = (idx) => idx < props.sampleCategories.length
 
-const indexA = ref(randomIndex())
-const indexB = ref(randomIndexButNot(indexA.value))
+const indexA = ref(0)
+const indexB = ref(0)
+const uniformChoice = ref(false)
 
 const getSamplesA = () => hasSample(indexA.value) ? props.sampleCategories[indexA.value].samples : null
 const getSamplesB = () => hasSample(indexB.value) ? props.sampleCategories[indexB.value].samples : null
@@ -32,9 +34,22 @@ const samplesB = ref(getSamplesB())
 
 
 const resample = () => {
-  indexA.value = randomIndex()
-  indexB.value = randomIndexButNot(indexA.value)
+  const r = Math.random()
+  if (r < props.zeroProb/2) {
+    indexA.value = 0
+    indexB.value = randomIndexButNot(0)
+    uniformChoice.value = false
+  } else if (r < props.zeroProb) {
+    indexA.value = randomIndexButNot(0)
+    indexB.value = 0
+    uniformChoice.value = false
+  } else {
+    indexA.value = randomIndex()
+    indexB.value = randomIndexButNot(indexA.value)
+    uniformChoice.value = true
+  }
 }
+resample()
 
 watch(indexA, () => samplesA.value = getSamplesA())
 watch(indexB, () => samplesB.value = getSamplesB())
@@ -51,8 +66,8 @@ const handleAnswer = (answer) => {
   uploadAnswer({
     a: keyA, b: keyB, sampleA, sampleB,
     choice, winner, loser, winnerSample, loserSample, 
-    playbackTimeA, playbackTimeB, startedA, startedB,
-    submitted: Date.now()
+    playbackTimeA, playbackTimeB, startedA, startedB, submitted: Date.now(),
+    uniformChoice
   })
 
   resample()

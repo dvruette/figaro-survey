@@ -53,7 +53,11 @@ def main():
   print()
 
   print("########## TOP 10 SAMPLES ##########")
-  print((rounds.groupby('sample').sum()['score'] / rounds.groupby('sample').count()['score']).sort_values(ascending=False).iloc[:10])
+  samples = rounds.groupby('sample').count()[['score']].rename(columns={'score': 'count'})
+  samples['winrate'] = rounds.groupby('sample').sum()['score'] / samples['count']
+  samples['score'] = (samples['winrate'] - 0.5) * samples['count']**2
+  with pd.option_context('display.max_colwidth', None):
+    print(samples.sort_values(['score', 'winrate', 'count'], ascending=False).iloc[:20])
   print()
 
   playback_a = df[['a', 'playbackTimeA']].rename(columns={'a': 'model', 'playbackTimeA': 'playback_time'}).dropna()

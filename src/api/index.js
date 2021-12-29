@@ -31,7 +31,6 @@ export { getSamplesList as getSamplesList }
 
 async function getSample(path) {
   return await getDownloadURL(ref(storage, path)).catch((error) => {
-    // Uh-oh, an error occurred!
     console.log(error)
     return ''
   })
