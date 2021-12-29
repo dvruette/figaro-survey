@@ -53,6 +53,8 @@ export default {
       Falls du diese Umfrage interessant gefunden hast, teile sie doch mit Freunden und Familie!
     `,
     share_cta: "Teilen",
-    copied: "Link in die Zwischenablage kopiert"
+    copied: "Link in die Zwischenablage kopiert",
+    participate_again: "Wenn du möchtest, kannst du noch einmal teilnehmen.",
+    again: "Weitere Antwort hinzufügen"
   }
 }

@@ -52,6 +52,8 @@ export default {
       If you found this survey interesting, please consider sharing it with your friends and family.
     `,
     share_cta: "Share",
-    copied: "Copied link to clipboard"
+    copied: "Copied link to clipboard",
+    participate_again: "If you like, you can participate again.",
+    again: "Add another answer"
   }
 }

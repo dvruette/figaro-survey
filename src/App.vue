@@ -3,6 +3,8 @@ import { ref, reactive, computed, getCurrentInstance, onMounted } from 'vue'
 import { getSamplesList, downloadAnswers } from './api'
 import QuestionRandomizer from './components/QuestionRandomizer.vue'
 
+const NODE_ENV = import.meta.env.MODE
+
 const samples = reactive({
   original: [],
   baseline: [],
@@ -13,7 +15,8 @@ const samples = reactive({
   desc2seqLatent: []
 })
 
-const numQuestions = 15
+const numQuestions = NODE_ENV == 'development' ? 3 : 15
+const currRun = ref(0)
 
 const internalInstance = getCurrentInstance()
 const setLanguage = lang => {
@@ -65,7 +68,6 @@ getSamplesList('desc2seq-both').then(list => {
   samples.desc2seqBoth = list
 })
 
-const NODE_ENV = import.meta.env.MODE
 
 const download = async () => {
   const keys = [
@@ -91,6 +93,12 @@ const download = async () => {
     anchor.click()
     anchor.remove()
   }
+}
+
+const resetSurvey = () => {
+  localStorage['currQuestion'] = 0
+  currRun.value += 1
+  view.value = 'survey'
 }
 
 const clipboardMsg = ref(false)
@@ -163,7 +171,7 @@ const share = () => {
     
     <div v-if="view == 'survey'">
       <h1 class="text-xl sm:text-2xl font-bold text-center mb-2">{{ $t('survey.title') }}</h1>
-      <QuestionRandomizer :num-questions="numQuestions" :sample-categories="sampleCategories" @finished="setView('done')" />
+      <QuestionRandomizer :key="currRun" :num-questions="numQuestions" :sample-categories="sampleCategories" @finished="setView('done')" />
 
       <hr class="border-gray-200 mb-4 -mx-4 mt-4" />
 
@@ -188,15 +196,21 @@ const share = () => {
         </template>
       </i18n-t>
 
-      <div class="w-full px-8">
-        <hr class="w-full border-gray-200" />
-      </div>
-
       <p>{{ $t('done.share_text') }}</p>
 
-      <button @click="share" class="px-4 py-3 w-48 rounded bg-slate-100 font-bold hover:bg-slate-300 flex items-center justify-center transition">
-        {{ $t('done.share_cta') }}&ensp;<img src="./assets/share.svg">
-      </button>
+      <div class="w-full relative">
+        <hr class="border-gray-200 absolute -left-6 -right-6" />
+      </div>
+
+      <div class="w-full flex flex-col sm:flex-row gap-6 justify-end">
+        <button @click="share" class="px-4 py-3 sm:w-48 rounded border border-slate-200 hover:border-slate-400 bg-slate-100 font-bold hover:bg-slate-300 flex items-center justify-center transition">
+          {{ $t('done.share_cta') }}&ensp;<img src="./assets/share.svg">
+        </button>
+
+        <button @click="resetSurvey" class="px-5 py-3 rounded bg-gray-800 hover:bg-black transition font-bold text-white">
+          {{ $t('done.again') }}
+        </button>
+      </div>
 
       <div v-if="clipboardMsg" class="fixed bottom-4 inset-x-0 flex justify-center">
         <div @click="clipboardMsg = false" class="cursor-pointer rounded bg-blue-500 font-medium text-sm text-white px-4 py-1.5">
