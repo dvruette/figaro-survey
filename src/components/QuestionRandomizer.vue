@@ -67,7 +67,7 @@ const handleAnswer = (answer) => {
     a: keyA, b: keyB, sampleA, sampleB,
     choice, winner, loser, winnerSample, loserSample, 
     playbackTimeA, playbackTimeB, startedA, startedB, submitted: Date.now(),
-    uniformChoice
+    uniformChoice: uniformChoice.value
   })
 
   resample()
