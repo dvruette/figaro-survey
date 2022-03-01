@@ -1,6 +1,15 @@
 import { initializeApp } from "firebase/app"
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage"
-import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, orderBy } from "firebase/firestore"
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  serverTimestamp,
+  query, 
+  orderBy, 
+  limit
+} from "firebase/firestore"
 
 const NODE_ENV = import.meta.env.MODE
 
@@ -52,7 +61,7 @@ export { uploadAnswer as uploadAnswer }
 
 async function downloadAnswers() {
   if (import.meta.env.MODE == 'development') {
-    const q = query(collection(db, 'answers'), orderBy('created'))
+    const q = query(collection(db, 'answers'), orderBy('created'), limit(10_000))
     const querySnapshot = await getDocs(q)
     const answers = []
     querySnapshot.forEach(doc => answers.push(doc.data()))

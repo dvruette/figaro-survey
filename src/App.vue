@@ -124,6 +124,10 @@ const share = () => {
   </div>
 
   <div class="max-w-full w-full sm:max-w-2xl p-4 bg-white shadow rounded-lg">
+    <div class="rounded-lg bg-green-50 border border-green-200 px-4 py-3 mb-6">
+      <p class="font-medium text-sm">{{ $t('init.survey_concluded') }}</p>
+    </div>
+    
     <div v-if="view == 'lang'">
       <h1 class="text-xl sm:text-2xl font-bold text-center mb-2">{{ $t('survey_name') }}</h1>
       
@@ -135,6 +139,7 @@ const share = () => {
 
     <div v-if="view == 'init'">
       <h1 class="text-xl sm:text-2xl font-bold mb-4">{{ $t('survey_name') }}</h1>
+
       <p class="mb-2">
         {{ $t('init.lead_1') }}
       </p>

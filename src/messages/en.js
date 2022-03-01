@@ -3,6 +3,10 @@ export default {
   hello: "world",
   survey_name: "Survey on Computer-Generated Music",
   init: {
+    survey_concluded: `
+      The survey has been concluded, thank you to everyone for participating. 
+      You can still fill out the survey, but your answers aren't going to be included in the final evaluation.
+    `,
     lead_1: `
       Thank you for participating in our survey about computer-generated music.
       The goal of this survey is to compare different algorithms (artificial intelligence) for generating music.

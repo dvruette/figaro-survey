@@ -3,6 +3,10 @@ export default {
   hello: 'welt',
   survey_name: "Umfrage zu Computergenerierter Musik",
   init: {
+    survey_concluded: `
+      Die Umfrage ist zu Ende. Danke an alle, die teilgenommen haben.
+      Du kannst die Umfrage immer noch ausfüllen, aber deine Antworten werden bei der Endauswertung nicht mehr berücksichtigt.
+    `,
     lead_1: `
       Danke, dass du dir Zeit nimmst, um an unserer Umfrage zu computergenerierter Musik teilzunehmen.
       Das Ziel der Umfrage ist es, verschiedene Algorithmen (Künstliche Intelligenz) zum Erzeugen von Musik zu vergleichen.
